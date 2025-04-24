@@ -1,32 +1,42 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { DataProvider } from "./context/DataContext";
+import { useEffect } from "react";
+import { exchangeCodeForTokens, handleAuthTokens, isAuthenticated } from "./utils/auth";
 import MainLayout from "./components/layout/MainLayout";
 
-import LandingPage from "./pages/LandingPage";
-import Dashboard from "./pages/Dashboard";
-import AddExpense from "./pages/AddExpense";
-import Expenses from "./pages/Expenses";
-import Wallet from "./pages/Wallet";
-import Goals from "./pages/Goals";
-import Notifications from "./pages/Notifications";
-import Settings from "./pages/Settings";
-import NotFound from "./pages/NotFound";
+const AuthHandler = () => {
+  const location = useLocation();
+
+  useEffect(() => {
+    const handleAuth = async () => {
+      const params = new URLSearchParams(location.search);
+      const code = params.get('code');
+      
+      if (code) {
+        try {
+          const tokens = await exchangeCodeForTokens(code);
+          handleAuthTokens(tokens);
+          window.location.href = '/app/dashboard';
+        } catch (error) {
+          console.error('Authentication error:', error);
+          window.location.href = '/';
+        }
+      }
+    };
+
+    handleAuth();
+  }, [location]);
+
+  return null;
+};
 
 const queryClient = new QueryClient();
 
 const App = () => {
-  // Check if user is authenticated based on the presence of the code parameter in the URL
-  const isAuthenticated = window.location.href.includes('code=');
-  
-  // For development purposes, log the authentication state
-  console.log("Authentication state:", isAuthenticated);
-  console.log("Current URL:", window.location.href);
-
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
@@ -34,9 +44,10 @@ const App = () => {
           <Toaster />
           <Sonner />
           <BrowserRouter>
+            <AuthHandler />
             <Routes>
-              <Route path="/" element={isAuthenticated ? <Navigate to="/app/dashboard" /> : <LandingPage />} />
-              <Route path="/app" element={<MainLayout />}>
+              <Route path="/" element={isAuthenticated() ? <Navigate to="/app/dashboard" /> : <LandingPage />} />
+              <Route path="/app" element={isAuthenticated() ? <MainLayout /> : <Navigate to="/" />}>
                 <Route index element={<Navigate to="/app/dashboard" replace />} />
                 <Route path="dashboard" element={<Dashboard />} />
                 <Route path="add-expense" element={<AddExpense />} />

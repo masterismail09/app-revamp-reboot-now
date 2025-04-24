@@ -28,7 +28,7 @@ const AuthHandler = () => {
       const params = new URLSearchParams(location.search);
       const code = params.get('code');
       
-      if (code) {
+      if (code && location.pathname === '/dashboard') {
         try {
           const tokens = await exchangeCodeForTokens(code);
           handleAuthTokens(tokens);
@@ -59,6 +59,7 @@ const App = () => {
             <AuthHandler />
             <Routes>
               <Route path="/" element={isAuthenticated() ? <Navigate to="/app/dashboard" /> : <LandingPage />} />
+              <Route path="/dashboard" element={<AuthHandler />} /> {/* Handle Cognito callback */}
               <Route path="/app" element={isAuthenticated() ? <MainLayout /> : <Navigate to="/" />}>
                 <Route index element={<Navigate to="/app/dashboard" replace />} />
                 <Route path="dashboard" element={<Dashboard />} />

@@ -1,9 +1,8 @@
-
 // Constants for Cognito configuration
 const COGNITO_CONFIG = {
   domain: 'https://ap-south-1cn1xkgrvi.auth.ap-south-1.amazoncognito.com',
   clientId: '40ce95qriabb1vg4llg4quav19',
-  redirectUri: 'https://d84l1y8p4kdic.cloudfront.net',
+  redirectUri: 'https://app-revamp-reboot-now.lovable.app/dashboard',
   clientSecret: 'jq2q33r9ds6olclvh23a2d4iv3ghp0qdj9ku7nfa1lu7glkob9q',
 };
 

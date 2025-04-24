@@ -20,8 +20,12 @@ import NotFound from "./pages/NotFound";
 const queryClient = new QueryClient();
 
 const App = () => {
-  // Check if user is authenticated (you can implement this based on Cognito token)
+  // Check if user is authenticated based on the presence of the code parameter in the URL
   const isAuthenticated = window.location.href.includes('code=');
+  
+  // For development purposes, log the authentication state
+  console.log("Authentication state:", isAuthenticated);
+  console.log("Current URL:", window.location.href);
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -31,8 +35,9 @@ const App = () => {
           <Sonner />
           <BrowserRouter>
             <Routes>
-              <Route path="/" element={isAuthenticated ? <Navigate to="/dashboard" /> : <LandingPage />} />
+              <Route path="/" element={isAuthenticated ? <Navigate to="/app/dashboard" /> : <LandingPage />} />
               <Route path="/app" element={<MainLayout />}>
+                <Route index element={<Navigate to="/app/dashboard" replace />} />
                 <Route path="dashboard" element={<Dashboard />} />
                 <Route path="add-expense" element={<AddExpense />} />
                 <Route path="expenses" element={<Expenses />} />

@@ -6,7 +6,8 @@ import { ArrowRight } from "lucide-react";
 
 const LandingPage = () => {
   const handleSignIn = () => {
-    window.location.href = "https://ap-south-1cn1xkgrvi.auth.ap-south-1.amazoncognito.com/login/continue?client_id=40ce95qriabb1vg4llg4quav19&redirect_uri=https%3A%2F%2Fd84l1y8p4kdic.cloudfront.net&response_type=code&scope=email+openid+phone";
+    // Use the exact Cognito URL without modifications
+    window.location.href = "https://ap-south-1cn1xkgrvi.auth.ap-south-1.amazoncognito.com/login?client_id=40ce95qriabb1vg4llg4quav19&response_type=code&scope=email+openid+phone&redirect_uri=https%3A%2F%2Fd84l1y8p4kdic.cloudfront.net";
   };
 
   return (

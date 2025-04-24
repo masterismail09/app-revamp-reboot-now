@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -7,6 +8,17 @@ import { DataProvider } from "./context/DataContext";
 import { useEffect } from "react";
 import { exchangeCodeForTokens, handleAuthTokens, isAuthenticated } from "./utils/auth";
 import MainLayout from "./components/layout/MainLayout";
+
+// Import all page components
+import LandingPage from "./pages/LandingPage";
+import Dashboard from "./pages/Dashboard";
+import AddExpense from "./pages/AddExpense";
+import Expenses from "./pages/Expenses";
+import Wallet from "./pages/Wallet";
+import Goals from "./pages/Goals";
+import Notifications from "./pages/Notifications";
+import Settings from "./pages/Settings";
+import NotFound from "./pages/NotFound";
 
 const AuthHandler = () => {
   const location = useLocation();
